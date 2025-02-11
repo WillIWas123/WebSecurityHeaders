@@ -105,8 +105,8 @@ def report_to_sysreptor(project_id,token,finding_id,url):
     if finding_id is None:
         # Creating new finding
         rurl = f"https://sysreptor.netsecurityrt.com/api/v1/pentestprojects/{project_id}/findings/fromtemplate/"
-        data = {"template":finding["template"],"template_language":"en-US"}
-        resp = requests.post(rurl,data=data,headers=headers,verify=False)
+        data = {"template":finding,"template_language":"en-US"}
+        resp = requests.post(rurl,data=json.dumps(data),headers=headers,verify=False)
         if resp.status_code > 400:
             print("Does not seem to be properly authenticated to Sysreptor!")
             sys.exit(1)
@@ -171,7 +171,7 @@ def main():
             report_to_sysreptor(args.project_id,token,NO_REDIRECT_TO_HTTPS,url.replace("https://","http://"))
 
 
-    try:
+    try: # TODO: keep try except around the HTTP request only
         resp=requests.request(method,url,headers=headers,timeout=args.timeout,verify=args.verify)
         if len(resp.history) == 0:
             output = NO_REDIRECT
