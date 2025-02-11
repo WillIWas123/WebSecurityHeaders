@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+bin
+*.TAG
+__pycache__/
+req
+lib
+pyvenv.cfg
