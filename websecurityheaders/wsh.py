@@ -186,23 +186,23 @@ def main():
             report_to_sysreptor(args.project_id, token, NO_REDIRECT_TO_HTTPS, insecure_url)
 
     # TODO: keep try except around the HTTP request only
-    #try: 
-    resp = requests.request(method, url, headers=headers, timeout=args.timeout, verify=args.verify)
-    output = check_redirect(resp.history) if resp.history else NO_REDIRECT
+    try: 
+        resp = requests.request(method, url, headers=headers, timeout=args.timeout, verify=args.verify)
+        output = check_redirect(resp.history) if resp.history else NO_REDIRECT
 
-    if not has_csp(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
-        report_to_sysreptor(args.project_id, token, MISSING_CSP, url)
+        if not has_csp(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
+            report_to_sysreptor(args.project_id, token, MISSING_CSP, url)
 
-    if not has_hsts(resp.headers):
-        report_to_sysreptor(args.project_id, token, MISSING_HSTS, url)
+        if not has_hsts(resp.headers):
+            report_to_sysreptor(args.project_id, token, MISSING_HSTS, url)
 
-    if not has_permissions_policy(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
-        report_to_sysreptor(args.project_id, token, MISSING_PERMISSIONS_POLICY, url)
+        if not has_permissions_policy(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
+            report_to_sysreptor(args.project_id, token, MISSING_PERMISSIONS_POLICY, url)
 
-    if not has_referrer_policy(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
-        report_to_sysreptor(args.project_id, token, MISSING_REFERRER_POLICY, url)
-    #except Exception as e:
-        #print(e)
+        if not has_referrer_policy(resp.headers) and output in {NO_REDIRECT, REDIRECT_TO_HTTPS}:
+            report_to_sysreptor(args.project_id, token, MISSING_REFERRER_POLICY, url)
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
