@@ -15,8 +15,8 @@ setup(
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=["requests"],
+    install_requires=["requests","pyyaml"],
     classifiers=[],
-    scripts=["websecurityheaders/websecurityheaders"]
+    scripts=["websecurityheaders/wsh.py"]
 
 )
